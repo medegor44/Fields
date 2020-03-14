@@ -110,8 +110,8 @@ namespace Fields
 
             (int d, int x1, int y1) = Gcd(b, a % b);
 
-            int x = y1 - (b / a) * x1;
-            int y = x1;
+            int x = y1;
+            int y = x1 - (a / b) * y1;
 
             return (d, x, y);
         }
