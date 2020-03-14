@@ -9,8 +9,11 @@ namespace Fields
 
         public FiniteField(int x, int modulo)
         {
-            num = x;
+            if (!IsPrimeModulo(modulo))
+                throw new ArgumentException("modulo must be a prime number and must be greather than 1");
+
             mod = modulo;
+            num = x % mod;
         }
 
         protected override Field Add(Field b)
@@ -86,6 +89,18 @@ namespace Fields
             }
             else
                 throw new ArgumentException("Type of b does not match to type a");
+        }
+
+        private bool IsPrimeModulo(int modulo)
+        {
+            if (modulo <= 1)
+                return false;
+
+            for (long i = 2; i * i <= modulo; i++)
+                if (modulo % i == 0)
+                    return false;
+
+            return true;
         }
 
         private (int, int, int) Gcd(int a, int b)
