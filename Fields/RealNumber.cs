@@ -11,6 +11,10 @@ namespace Fields
             num = x;
         }
 
+        public override Field NeutralByAddition => new RealNumber(0);
+
+        public override Field NeutralByMultiplication => new RealNumber(1);
+
         protected override Field Add(Field b)
         {
             if (b is RealNumber y)

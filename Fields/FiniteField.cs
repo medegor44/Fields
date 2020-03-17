@@ -7,6 +7,10 @@ namespace Fields
         private int mod;
         private int num;
 
+        public override Field NeutralByAddition => new FiniteField(0, mod);
+
+        public override Field NeutralByMultiplication => new FiniteField(1, mod);
+
         public FiniteField(int x, int modulo)
         {
             if (!IsPrimeModulo(modulo))
