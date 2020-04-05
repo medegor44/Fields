@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Fields
 {
@@ -60,6 +61,11 @@ namespace Fields
                 return a.NeutralByMultiplication / a;
         }
 
+        public static List<Field> Sqrt(Field a)
+        {
+            return a.Sqrt();
+        }
+
         public static Field operator-(Field a)
         {
             return a.NeutralByAddition - a;
@@ -95,6 +101,7 @@ namespace Fields
         public abstract Field NeutralByAddition { get; }
         public abstract Field NeutralByMultiplication { get; }
 
+        protected abstract List<Field> Sqrt();
         protected abstract bool EqualsTo(Field b);
         protected abstract Field Add(Field b);
         protected abstract Field Multiply(Field b);

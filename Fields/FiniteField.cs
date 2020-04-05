@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Fields
 {
@@ -118,6 +119,17 @@ namespace Fields
             int y = x1 - (a / b) * y1;
 
             return (d, x, y);
+        }
+
+        protected override List<Field> Sqrt()
+        {
+            var res = new List<Field>();
+
+            for (int i = 0; i < mod; i++)
+                if (i * i % mod == num)
+                    res.Add(new FiniteField(i, mod));
+
+            return res;
         }
     }
 }

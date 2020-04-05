@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Fields
 {
@@ -49,6 +50,26 @@ namespace Fields
                 return new RealNumber(num * y.num);
             else
                 throw new ArgumentException("Type of b does not match to type a");
+        }
+
+        protected override List<Field> Sqrt()
+        {
+            var res = new List<Field>();
+
+            if (num < 0)
+                return res;
+
+            if (Math.Abs(num) < double.Epsilon)
+                res.Add(new RealNumber(0));
+            else
+            {
+                var sqrt = Math.Sqrt(num);
+
+                res.Add(new RealNumber(+sqrt));
+                res.Add(new RealNumber(-sqrt));
+            }
+
+            return res;
         }
 
         protected override Field Subtract(Field b)
