@@ -9,12 +9,13 @@ namespace FieldsTests
         [Fact]
         public void AddTwoNumbers()
         {
-            const int mod = 17;
-            var x = new FiniteField(9, mod);
-            var y = new FiniteField(12, mod);
+            FiniteField.Mod = 17;
+
+            var x = new FiniteField(9);
+            var y = new FiniteField(12);
 
             var actual = x + y;
-            var expected = new FiniteField(4, mod);
+            var expected = new FiniteField(4);
 
             Assert.Equal(actual, expected);
         }
@@ -22,12 +23,13 @@ namespace FieldsTests
         [Fact]
         public void MultiplyTwoNumbers()
         {
-            const int mod = 17;
-            var x = new FiniteField(9, mod);
-            var y = new FiniteField(12, mod);
+            FiniteField.Mod = 17;
+
+            var x = new FiniteField(9);
+            var y = new FiniteField(12);
 
             var actual = x * y;
-            var expected = new FiniteField((9 * 12) % mod, mod);
+            var expected = new FiniteField((9 * 12) % FiniteField.Mod);
 
             Assert.Equal(actual, expected);
         }
@@ -35,12 +37,13 @@ namespace FieldsTests
         [Fact]
         public void SubtractTwoNumbers()
         {
-            const int mod = 17;
-            var x = new FiniteField(9, mod);
-            var y = new FiniteField(12, mod);
+            FiniteField.Mod = 17;
+
+            var x = new FiniteField(9);
+            var y = new FiniteField(12);
 
             var actual = x - y;
-            var expected = new FiniteField(14, mod);
+            var expected = new FiniteField(14);
 
             Assert.Equal(actual, expected);
         }
@@ -48,12 +51,13 @@ namespace FieldsTests
         [Fact]
         public void DivideTwoNumbers()
         {
-            const int mod = 17;
-            var x = new FiniteField(9, mod);
-            var y = new FiniteField(12, mod);
+            FiniteField.Mod = 17;
+
+            var x = new FiniteField(9);
+            var y = new FiniteField(12);
 
             var actual = x / y;
-            var expected = new FiniteField(5, mod);
+            var expected = new FiniteField(5);
 
             Assert.Equal(actual, expected);
         }
@@ -61,9 +65,10 @@ namespace FieldsTests
         [Fact]
         public void DivideByZeroThrowsExeption()
         {
-            const int mod = 17;
-            var x = new FiniteField(9, mod);
-            var y = new FiniteField(0, mod);
+            FiniteField.Mod = 17;
+
+            var x = new FiniteField(9);
+            var y = new FiniteField(0);
 
             Assert.Throws<DivideByZeroException>(() => x / y);
         }
@@ -71,7 +76,7 @@ namespace FieldsTests
         [Fact]
         public void NonPrimeModThrowsExeption()
         {
-            Assert.Throws<ArgumentException>(() => new FiniteField(0, 10));
+            Assert.Throws<ArgumentException>(() => { FiniteField.Mod = 16; });
         }
     }
 }

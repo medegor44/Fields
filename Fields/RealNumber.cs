@@ -6,6 +6,7 @@ namespace Fields
     public class RealNumber : Field
     {
         private double num;
+        private double eps = 1e-9;
 
         public RealNumber(double x)
         {
@@ -28,7 +29,7 @@ namespace Fields
         {
             if (b is RealNumber y)
             {
-                if (Math.Abs(y.num) < double.Epsilon)
+                if (Math.Abs(y.num) < eps)
                     throw new DivideByZeroException("Division on non-invertable element");
 
                 return new RealNumber(num / y.num);
@@ -40,7 +41,7 @@ namespace Fields
         protected override bool EqualsTo(Field b)
         {
             if (b is RealNumber c)
-                return Math.Abs(num - c.num) < double.Epsilon;
+                return Math.Abs(num - c.num) < eps;
             return false;
         }
 
@@ -59,7 +60,7 @@ namespace Fields
             if (num < 0)
                 return res;
 
-            if (Math.Abs(num) < double.Epsilon)
+            if (Math.Abs(num) < eps)
                 res.Add(new RealNumber(0));
             else
             {

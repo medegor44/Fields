@@ -5,31 +5,36 @@ namespace Fields
 {
     public class FiniteField : Field
     {
-        private int mod;
-        private int num;
-
-        public override Field NeutralByAddition => new FiniteField(0, mod);
-
-        public override Field NeutralByMultiplication => new FiniteField(1, mod);
-
-        public FiniteField(int x, int modulo)
+        public static int Mod
         {
-            if (!IsPrimeModulo(modulo))
+            get => _mod;
+            set
+            {
+                if (!IsPrimeModulo(value))
+                    throw new ArgumentException("Modulo must be prime");
+                _mod = value;
+            }
+        }
+
+        private int num;
+        private static int _mod;
+
+        public override Field NeutralByAddition => new FiniteField(0);
+
+        public override Field NeutralByMultiplication => new FiniteField(1);
+
+        public FiniteField(int x)
+        {
+            if (!IsPrimeModulo(Mod))
                 throw new ArgumentException("modulo must be a prime number and must be greather than 1");
 
-            mod = modulo;
-            num = x % mod;
+            num = x % Mod;
         }
 
         protected override Field Add(Field b)
         {
             if (b is FiniteField y)
-            {
-                if (y.mod != mod)
-                    throw new ArgumentException("modulo of b does not equal to modulo of a");
-
-                return new FiniteField((num + y.num) % mod, mod);
-            }
+                return new FiniteField((num + y.num) % Mod);
             else
                 throw new ArgumentException("Type of b does not match to type a");
         }
@@ -38,21 +43,18 @@ namespace Fields
         {
             if (b is FiniteField y)
             {
-                if (y.mod != mod)
-                    throw new ArgumentException("modulo of b does not equal to modulo of a");
-
-                (int d, int _, int t) = Gcd(mod, y.num);
+                (int d, int _, int t) = Gcd(Mod, y.num);
 
                 if (d != 1)
                     throw new DivideByZeroException("Division on non-invertable element");
 
-                t %= mod;
+                t %= Mod;
                 if (t < 0)
-                    t += mod;
+                    t += Mod;
 
-                int z = (num * t) % mod;
+                int z = (num * t) % Mod;
 
-                return new FiniteField(z, mod);
+                return new FiniteField(z);
             }
             else
                 throw new ArgumentException("Type of b does not match to type a");
@@ -60,8 +62,8 @@ namespace Fields
 
         protected override bool EqualsTo(Field b)
         {
-            if (b is FiniteField c && c.mod == mod)
-                return (num - c.num) % mod == 0;
+            if (b is FiniteField c)
+                return (num - c.num) % Mod == 0;
             return false;
         }
 
@@ -69,10 +71,7 @@ namespace Fields
         {
             if (b is FiniteField y)
             {
-                if (y.mod != mod)
-                    throw new ArgumentException("modulo of b does not equal to modulo of a");
-
-                return new FiniteField((num * y.num) % mod, mod);
+                return new FiniteField((num * y.num) % Mod);
             }
             else
                 throw new ArgumentException("Type of b does not match to type a");
@@ -82,21 +81,18 @@ namespace Fields
         {
             if (b is FiniteField y)
             {
-                if (y.mod != mod)
-                    throw new ArgumentException("modulo of b does not equal to modulo of a");
-
-                int t = (num - y.num) % mod;
+                int t = (num - y.num) % Mod;
 
                 if (t < 0)
-                    t += mod;
+                    t += Mod;
 
-                return new FiniteField(t, mod);
+                return new FiniteField(t);
             }
             else
                 throw new ArgumentException("Type of b does not match to type a");
         }
 
-        private bool IsPrimeModulo(int modulo)
+        private static bool IsPrimeModulo(int modulo)
         {
             if (modulo <= 1)
                 return false;
@@ -125,9 +121,9 @@ namespace Fields
         {
             var res = new List<Field>();
 
-            for (int i = 0; i < mod; i++)
-                if (i * i % mod == num)
-                    res.Add(new FiniteField(i, mod));
+            for (int i = 0; i < Mod; i++)
+                if (i * i % Mod == num)
+                    res.Add(new FiniteField(i));
 
             return res;
         }
